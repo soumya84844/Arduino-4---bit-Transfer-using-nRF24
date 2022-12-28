@@ -1,30 +1,19 @@
-/*
- * This is a 1 channel nrf24l01 transmitter and receiver code.
- * There is a single output(led control) in the receiver which can controlled with the pushbutton in transmitter;
- * 
- * To know more refer the below links:
- *  https://youtu.be/UoeU79G09Dk
- *  https://dhirajkushwaha.com/elekkrypt
- *  
- */
-
-
 #include <SPI.h>
 #include <RF24.h>
 #include <nRF24L01.h>
 
-RF24 radio(7,8); // declaring CE and CSN pins
+RF24 radio(7,8);
 const byte address[] = "node1";
 
 String command = "";
 
 void setup() {
-  radio.begin(); // initializes the operations of the chip
+  radio.begin();
   radio.openReadingPipe(0, address);
-  radio.setPALevel(RF24_PA_MIN);
+  radio.setPALevel(RF24_PA_MAX);
   radio.startListening();
   
-  pinMode(10, OUTPUT); // declares LEDpin as an output
+  pinMode(10, OUTPUT);
   pinMode(9, OUTPUT);
   pinMode(4, OUTPUT);
   pinMode(3, OUTPUT);
@@ -33,8 +22,20 @@ void setup() {
 
 
 void loop() {
-  while(radio.available()){  
-    radio.read(&command, sizeof(command));
+  while(radio.available()){
+    int state = 0;  
+    radio.read(&state, sizeof(state));
+
+    if(state == 0) command = "0000";
+    else if(state == 1) command = "1010";
+    else if(state == 2) command = "0101";
+    else if(state == 3) command = "1000";
+    else if(state == 4) command = "0010";
+    else if(state == 5) command = "0100";
+    else if(state == 6) command = "0001";
+    else if(state == 7) command = "0110";
+    else if(state == 8) command = "1001";
+    
     analogWrite(10, value(command[0]));
     analogWrite(9, value(command[1]));
     analogWrite(4, value(command[2]));
