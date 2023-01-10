@@ -13,10 +13,10 @@ void setup() {
   radio.setPALevel(RF24_PA_MAX);
   radio.startListening();
   
-  pinMode(10, OUTPUT);
-  pinMode(9, OUTPUT);
-  pinMode(4, OUTPUT);
+  pinMode(2, OUTPUT);
   pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
   
 }
 
@@ -36,19 +36,15 @@ void loop() {
     else if(state == 7) command = "0110";
     else if(state == 8) command = "1001";
     
-    analogWrite(10, value(command[0]));
-    analogWrite(9, value(command[1]));
-    analogWrite(4, value(command[2]));
-    analogWrite(3, value(command[3]));
+    digitalWrite(2, value(command[0]));
+    digitalWrite(3, value(command[1]));
+    digitalWrite(4, value(command[2]));
+    digitalWrite(5, value(command[3]));
   }
 
 }
 
 int value(char c)
 {
-  int d = String(c).toInt();
-  if(d == 0)
-    return 0;
-  else if(d == 1)
-    return 1;
+  return String(c).toInt();
 }

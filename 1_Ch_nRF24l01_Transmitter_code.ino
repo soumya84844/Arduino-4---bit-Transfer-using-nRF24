@@ -16,10 +16,10 @@ void setup() {
   radio.setPALevel(RF24_PA_MAX);
   radio.stopListening();    
   
-  pinMode(2, INPUT);
-  pinMode(3, INPUT);
-  pinMode(5, INPUT);
-  pinMode(6, INPUT);
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
 
 }
                                                                           
