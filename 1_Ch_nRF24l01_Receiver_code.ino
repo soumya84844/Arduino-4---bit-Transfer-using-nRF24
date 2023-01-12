@@ -6,6 +6,7 @@ RF24 radio(7,8);
 const byte address[] = "node1";
 
 String command = "";
+int sp = 0;
 
 void setup() {
   radio.begin();
@@ -17,6 +18,7 @@ void setup() {
   pinMode(3, OUTPUT);
   pinMode(4, OUTPUT);
   pinMode(5, OUTPUT);
+  pinMode(9, OUTPUT);
   
 }
 
@@ -25,6 +27,7 @@ void loop() {
   while(radio.available()){
     int state = 0;  
     radio.read(&state, sizeof(state));
+    radio.read(&sp, sizeof(sp));
 
     if(state == 0) command = "0000";
     else if(state == 1) command = "1010";
@@ -35,6 +38,8 @@ void loop() {
     else if(state == 6) command = "0001";
     else if(state == 7) command = "0110";
     else if(state == 8) command = "1001";
+    
+    analogWrite(9, sp);
     
     digitalWrite(2, value(command[0]));
     digitalWrite(3, value(command[1]));

@@ -10,6 +10,8 @@ String d3 = "0";
 String d5 = "0";
 String d6 = "0";
 
+int sp = 0;
+
 void setup() {
   radio.begin();
   radio.openWritingPipe(address);
@@ -20,6 +22,7 @@ void setup() {
   pinMode(3, OUTPUT);
   pinMode(5, OUTPUT);
   pinMode(6, OUTPUT);
+  pinMode(A0, INPUT);
 
 }
                                                                           
@@ -29,6 +32,8 @@ void loop() {
   d3 = String(digitalRead(3));
   d5 = String(digitalRead(5));
   d6 = String(digitalRead(6));
+
+  sp = map(analogRead(A0), 0, 1023, 0, 255);
 
   int state = 0;
 
@@ -45,5 +50,6 @@ void loop() {
   else if(command == "1001") state = 8;
   
   radio.write(&state, sizeof(state));
+  radio.write(&sp, sizeof(sp));
   
 }
